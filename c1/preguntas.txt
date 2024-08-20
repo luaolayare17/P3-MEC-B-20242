@@ -1,1 +1,100 @@
+##¿Qué es un atributo estático en Java?
+{
+~Un atributo que pertenece a una instancia de la clase.
+~Un atributo que se puede heredar.
+=Un atributo que pertenece a la clase en sí y no a una instancia específica.
+~Un atributo que no puede ser modificado.
+}
+
+##¿Cuál es la diferencia principal entre una clase y un objeto en Java?
+{
+~Una clase es una instancia de un objeto.
+~Un objeto define la estructura de una clase.
+=Una clase es una plantilla o modelo, mientras que un objeto es una instancia de esa clase.
+~No existe diferencia, ambos términos son intercambiables.
+}
+
+##¿Qué es la encapsulación en la Programación Orientada a Objetos?
+{
+~El proceso de combinar datos y métodos que manipulan esos datos en un solo objeto.
+~La capacidad de una clase para heredar métodos de otra clase.
+=La restricción del acceso directo a los datos de una clase y la provisión de métodos públicos para acceder a esos datos.
+~La capacidad de un objeto de adoptar múltiples formas.
+}
+
+##¿Qué es la sobrecarga de métodos en Java?
+{
+~Es la capacidad de redefinir un método en una clase derivada.
+=Es el uso de múltiples métodos en la misma clase con el mismo nombre pero diferentes firmas.
+~Es cuando dos métodos tienen el mismo nombre y la misma firma en clases diferentes.
+~Es cuando se redefine un método de una clase base en una clase derivada.
+}
+
+##Complete los espacios vacíos del siguiente programa:
+class Animal {
+    static String tipo = "Mamífero";
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal <<animal1>> = new Animal();
+        Animal animal2 = new Animal();
+        animal2.tipo = "Reptil";
+        System.out.println(<<animal1.tipo>>);
+    }
+}
+
+
+##¿Qué tipo de relación describe el siguiente código?
+class Motor {}
+class Coche {
+    private Motor motor;
+    public Coche() {
+        motor = new Motor();
+    }
+}
+
+{
+~Herencia
+=Composición
+~Agregación
+~Polimorfismo
+}
+
+##En el contexto de la herencia en Java, ¿qué significa que una clase es "final"?
+{
+~No se puede instanciar.
+=No puede ser heredada.
+~Sus métodos no pueden ser sobrecargados.
+~Es una clase abstracta.
+}
+
+##¿Qué es la abstracción en la Programación Orientada a Objetos?
+{
+=Es la ocultación de detalles de implementación y la exposición de solo la funcionalidad esencial.
+~Es el uso de clases abstractas para definir métodos sin implementación.
+~Es la capacidad de un objeto para cambiar su comportamiento en tiempo de ejecución.
+~Es la capacidad de una clase para heredar características de múltiples clases.
+}
+
+##¿Cuál es la función principal de los métodos get y set en Java?
+{
+~Para realizar operaciones matemáticas en los atributos de la clase.
+=Para acceder y modificar los valores de los atributos privados de una clase.
+~Para inicializar variables estáticas en una clase.
+~Para definir el comportamiento polimórfico de una clase.
+}
+
+
+##¿Qué es el polimorfismo en la Programación Orientada a Objetos?
+{
+~La capacidad de una clase de tener múltiples constructores.
+=La capacidad de un objeto de adoptar múltiples formas, permitiendo que un mismo método se comporte de diferentes maneras según el objeto que lo invoque.
+~La habilidad de una clase para heredar métodos de varias clases a la vez.
+~La habilidad de definir múltiples clases dentro de una única clase.
+}
+
+
+
+
 
