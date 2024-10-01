@@ -100,3 +100,50 @@ public class RegistroPacientes extends JFrame {
         panelAtencion.add(lblProximoPaciente);
 
         panelDerecho.add(panelAtencion, BorderLayout.NORTH);
+        
+        // *** Título para la cola de usuarios ***
+        JLabel lblColaTitulo = new JLabel("Cola de usuarios", SwingConstants.CENTER);
+        lblColaTitulo.setFont(new Font("Arial", Font.BOLD, 14));
+        panelDerecho.add(lblColaTitulo, BorderLayout.CENTER);
+
+        // *** TABLA DE PACIENTES ***
+        String[] columnas = {"Cédula", "Hora de Registro"};
+        modeloTabla = new DefaultTableModel(columnas, 0);
+        tablaPacientes = new JTable(modeloTabla);
+        panelDerecho.add(new JScrollPane(tablaPacientes), BorderLayout.SOUTH);
+
+        panelPrincipal.add(panelDerecho);
+
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarPaciente();
+            }
+        });
+
+        sliderTiempo.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int tiempoSimulado = sliderTiempo.getValue();
+                lblTiempoSlider.setText("Tiempo por turno: " + tiempoSimulado + " segundos");
+            }
+        });
+
+        timer = new Timer(10000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                atenderSiguientePaciente();
+            }
+        });
+    }
+
+    private void registrarPaciente() {
+        String cedula = txtCedula.getText();
+        String categoria = (String) cmbCategoria.getSelectedItem();
+        String servicio = (String) cmbServicio.getSelectedItem();
+        LocalTime horaLlegada = LocalTime.now();
+
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingresa la cédula.");
+            return;
+        }
