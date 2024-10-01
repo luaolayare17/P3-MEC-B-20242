@@ -46,3 +46,30 @@ public class RegistroPacientes extends JFrame {
         sliderTiempo.setPaintTicks(true);
         sliderTiempo.setPaintLabels(true);
         sliderTiempo.setMajorTickSpacing(5); 
+        
+        JButton btnRegistrar = new JButton("Registrar Paciente");
+
+        txtCedula.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validarNumerico();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validarNumerico();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validarNumerico();
+            }
+
+            private void validarNumerico() {
+                String text = txtCedula.getText();
+                if (!text.matches("\\d*")) {
+                    JOptionPane.showMessageDialog(null, "El campo cédula solo debe contener valores numéricos.");
+                    txtCedula.setText(text.replaceAll("[^\\d]", "")); 
+                }
+            }
+        });
