@@ -91,7 +91,6 @@ public class RegistroPacientes extends JFrame {
 
         JPanel panelDerecho = new JPanel(new BorderLayout());
 
-        // Etiqueta para el paciente en atención y el próximo turno
         JPanel panelAtencion = new JPanel(new GridLayout(2, 1));
         lblPacienteAtendido = new JLabel("Paciente en atención: Ninguno", SwingConstants.CENTER);
         lblPacienteAtendido.setFont(new Font("Arial", Font.BOLD, 14));
@@ -102,12 +101,10 @@ public class RegistroPacientes extends JFrame {
 
         panelDerecho.add(panelAtencion, BorderLayout.NORTH);
 
-        // *** Título para la cola de usuarios ***
         JLabel lblColaTitulo = new JLabel("Cola de usuarios", SwingConstants.CENTER);
         lblColaTitulo.setFont(new Font("Arial", Font.BOLD, 14));
         panelDerecho.add(lblColaTitulo, BorderLayout.CENTER);
 
-        // *** TABLA DE PACIENTES ***
         String[] columnas = {"Cédula", "Hora de Registro"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaPacientes = new JTable(modeloTabla);
@@ -144,9 +141,18 @@ public class RegistroPacientes extends JFrame {
         String servicio = (String) cmbServicio.getSelectedItem();
         LocalTime horaLlegada = LocalTime.now();
 
+        // Validar que el campo cédula no esté vacío
         if (cedula.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor ingresa la cédula.");
             return;
+        }
+
+        // Verificar si ya existe un paciente con la misma cédula
+        for (Paciente p : pacientes) {
+            if (p.getCedula().equals(cedula)) {
+                JOptionPane.showMessageDialog(this, "El paciente con cédula " + cedula + " ya está registrado.");
+                return;
+            }
         }
 
         Paciente nuevoPaciente = new Paciente(cedula, categoria, servicio, horaLlegada);
