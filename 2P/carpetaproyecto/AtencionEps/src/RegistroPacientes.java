@@ -73,3 +73,30 @@ public class RegistroPacientes extends JFrame {
                 }
             }
         });
+
+        
+        panelFormulario.add(new JLabel("Cédula:"));
+        panelFormulario.add(txtCedula);
+        panelFormulario.add(new JLabel("Categoría:"));
+        panelFormulario.add(cmbCategoria);
+        panelFormulario.add(new JLabel("Servicio:"));
+        panelFormulario.add(cmbServicio);
+        panelFormulario.add(lblContador);
+        panelFormulario.add(lblTiempoSlider);
+        panelFormulario.add(sliderTiempo);
+        panelFormulario.add(btnRegistrar);
+
+        panelPrincipal.add(panelFormulario);
+
+        JPanel panelDerecho = new JPanel(new BorderLayout());
+
+        // Etiqueta para el paciente en atención y el próximo turno
+        JPanel panelAtencion = new JPanel(new GridLayout(2, 1));
+        lblPacienteAtendido = new JLabel("Paciente en atención: Ninguno", SwingConstants.CENTER);
+        lblPacienteAtendido.setFont(new Font("Arial", Font.BOLD, 14));
+        lblProximoPaciente = new JLabel("Próximo turno: Ninguno", SwingConstants.CENTER);
+        lblProximoPaciente.setFont(new Font("Arial", Font.PLAIN, 12));
+        panelAtencion.add(lblPacienteAtendido);
+        panelAtencion.add(lblProximoPaciente);
+
+        panelDerecho.add(panelAtencion, BorderLayout.NORTH);
