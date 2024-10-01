@@ -1,3 +1,5 @@
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -46,7 +48,7 @@ public class RegistroPacientes extends JFrame {
         sliderTiempo.setPaintTicks(true);
         sliderTiempo.setPaintLabels(true);
         sliderTiempo.setMajorTickSpacing(5); 
-        
+
         JButton btnRegistrar = new JButton("Registrar Paciente");
 
         txtCedula.getDocument().addDocumentListener(new DocumentListener() {
@@ -74,7 +76,6 @@ public class RegistroPacientes extends JFrame {
             }
         });
 
-        
         panelFormulario.add(new JLabel("Cédula:"));
         panelFormulario.add(txtCedula);
         panelFormulario.add(new JLabel("Categoría:"));
@@ -100,7 +101,7 @@ public class RegistroPacientes extends JFrame {
         panelAtencion.add(lblProximoPaciente);
 
         panelDerecho.add(panelAtencion, BorderLayout.NORTH);
-        
+
         // *** Título para la cola de usuarios ***
         JLabel lblColaTitulo = new JLabel("Cola de usuarios", SwingConstants.CENTER);
         lblColaTitulo.setFont(new Font("Arial", Font.BOLD, 14));
@@ -147,81 +148,92 @@ public class RegistroPacientes extends JFrame {
             JOptionPane.showMessageDialog(this, "Por favor ingresa la cédula.");
             return;
         }
-    
-        private void atenderSiguientePaciente() {
-            if (pacientes.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No hay pacientes en la cola.");
-                timer.stop();
-                atencionAutomaticaActiva = false;
-                return;
-            }
-    
-            Paciente pacienteAtendido = pacientes.remove(0);
-            lblPacienteAtendido.setText("<html>Paciente en atención:<br>"
-                + "Cédula: " + pacienteAtendido.getCedula() + "<br>"
-                + "Categoría: " + pacienteAtendido.getCategoria() + "<br>"
-                + "Servicio: " + pacienteAtendido.getServicio() + "<br>"
-                + "Hora de llegada: " + pacienteAtendido.getHoraLlegada() + "</html>");
-    
-            modeloTabla.removeRow(0);
-    
-            contadorPacientes--;
-            lblContador.setText("Personas registradas: " + contadorPacientes);
-    
-            if (!pacientes.isEmpty()) {
-                Paciente proximoPaciente = pacientes.get(0);
-                lblProximoPaciente.setText("<html>Próximo turno:<br>"
-                    + "Cédula: " + proximoPaciente.getCedula() + "<br>"
-                    + "Categoría: " + proximoPaciente.getCategoria() + "<br>"
-                    + "Servicio: " + proximoPaciente.getServicio() + "</html>");
-            } else {
-                lblProximoPaciente.setText("Próximo turno: Ninguno");
-            }
-        }
-    
-        private void iniciarAtencionAutomatica() {
-            int tiempoSimulado = sliderTiempo.getValue();
-            JOptionPane.showMessageDialog(this, "¡Inicia la atención automática! Tiempo ajustado a " + tiempoSimulado + " segundos por turno.");
-            timer.setDelay(tiempoSimulado * 1000);
-            timer.start();
-            atencionAutomaticaActiva = true;
-        }
-    
-        public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> {
-                RegistroPacientes frame = new RegistroPacientes();
-                frame.setVisible(true);
-            });
+
+        Paciente nuevoPaciente = new Paciente(cedula, categoria, servicio, horaLlegada);
+        pacientes.add(nuevoPaciente);
+        contadorPacientes++;
+
+        lblContador.setText("Personas registradas: " + contadorPacientes);
+        modeloTabla.addRow(new Object[] {cedula, horaLlegada});
+
+        if (contadorPacientes == 10 && !atencionAutomaticaActiva) {
+            iniciarAtencionAutomatica();
         }
     }
-    
-    class Paciente {
-        private String cedula;
-        private String categoria;
-        private String servicio;
-        private LocalTime horaLlegada;
-    
-        public Paciente(String cedula, String categoria, String servicio, LocalTime horaLlegada) {
-            this.cedula = cedula;
-            this.categoria = categoria;
-            this.servicio = servicio;
-            this.horaLlegada = horaLlegada;
+
+    private void atenderSiguientePaciente() {
+        if (pacientes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay pacientes en la cola.");
+            timer.stop();
+            atencionAutomaticaActiva = false;
+            return;
         }
-    
-        public String getCedula() {
-            return cedula;
-        }
-    
-        public String getCategoria() {
-            return categoria;
-        }
-    
-        public String getServicio() {
-            return servicio;
-        }
-    
-        public LocalTime getHoraLlegada() {
-            return horaLlegada;
+
+        Paciente pacienteAtendido = pacientes.remove(0);
+        lblPacienteAtendido.setText("<html>Paciente en atención:<br>"
+            + "Cédula: " + pacienteAtendido.getCedula() + "<br>"
+            + "Categoría: " + pacienteAtendido.getCategoria() + "<br>"
+            + "Servicio: " + pacienteAtendido.getServicio() + "<br>"
+            + "Hora de llegada: " + pacienteAtendido.getHoraLlegada() + "</html>");
+
+        modeloTabla.removeRow(0);
+
+        contadorPacientes--;
+        lblContador.setText("Personas registradas: " + contadorPacientes);
+
+        if (!pacientes.isEmpty()) {
+            Paciente proximoPaciente = pacientes.get(0);
+            lblProximoPaciente.setText("<html>Próximo turno:<br>"
+                + "Cédula: " + proximoPaciente.getCedula() + "<br>"
+                + "Categoría: " + proximoPaciente.getCategoria() + "<br>"
+                + "Servicio: " + proximoPaciente.getServicio() + "</html>");
+        } else {
+            lblProximoPaciente.setText("Próximo turno: Ninguno");
         }
     }
-    
+
+    private void iniciarAtencionAutomatica() {
+        int tiempoSimulado = sliderTiempo.getValue();
+        JOptionPane.showMessageDialog(this, "¡Inicia la atención automática! Tiempo ajustado a " + tiempoSimulado + " segundos por turno.");
+        timer.setDelay(tiempoSimulado * 1000);
+        timer.start();
+        atencionAutomaticaActiva = true;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            RegistroPacientes frame = new RegistroPacientes();
+            frame.setVisible(true);
+        });
+    }
+}
+
+class Paciente {
+    private String cedula;
+    private String categoria;
+    private String servicio;
+    private LocalTime horaLlegada;
+
+    public Paciente(String cedula, String categoria, String servicio, LocalTime horaLlegada) {
+        this.cedula = cedula;
+        this.categoria = categoria;
+        this.servicio = servicio;
+        this.horaLlegada = horaLlegada;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public String getServicio() {
+        return servicio;
+    }
+
+    public LocalTime getHoraLlegada() {
+        return horaLlegada;
+    }
+}
